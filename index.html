@@ -87,25 +87,15 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
     const socket = io();
-    const userColor = getRandomColor();
-
-    function getRandomColor() {
-      const letters = '0123456789ABCDEF';
-      let color = '#';
-      for (let i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-      }
-      return color;
-    }
 
     function sendMessage() {
       const message = $('#input').val();
-      socket.emit('chat message', { message, color: userColor });
+      socket.emit('chat message', message);
       $('#input').val('');
     }
 
     socket.on('chat message', (msg) => {
-      $('#messages').append($('<li>').addClass('message').css('background-color', msg.color).text(msg.message));
+      $('#messages').append($('<li>').addClass('message').text(msg));
     });
   </script>
 </body>
