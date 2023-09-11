@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chat en tiempo real</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f2f2f2;
+    }
+    #chat-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    #chat-header {
+      background-color: #333;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+    }
+    #messages {
+      padding: 10px;
+      list-style: none;
+      overflow-y: scroll;
+      max-height: 300px;
+    }
+    .message {
+      margin-bottom: 10px;
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+    .user-message {
+      background-color: #0074D9;
+      color: #fff;
+      float: right;
+    }
+    .other-message {
+      background-color: #E5E5EA;
+      color: #333;
+      float: left;
+    }
+    #input {
+      width: 70%;
+      padding: 10px;
+      border: none;
+      border-top: 1px solid #ccc;
+      border-bottom: 1px solid #ccc;
+      font-size: 16px;
+      outline: none;
+      border-radius: 5px 0 0 5px;
+    }
+    #sendButton {
+      width: 30%;
+      padding: 10px;
+      border: none;
+      font-size: 16px;
+      outline: none;
+      background-color: #0074D9;
+      color: #fff;
+      cursor: pointer;
+      border-radius: 0 5px 5px 0;
+    }
+    #sendButton:hover {
+      background-color: #0056a9;
+    }
+  </style>
+</head>
+<body>
+  <div id="chat-container">
+    <div id="chat-header">
+      <h2>Chat en Tiempo Real</h2>
+    </div>
+    <ul id="messages"></ul>
+    <div class="message-input-container">
+      <input id="input" autocomplete="off" placeholder="Escribe un mensaje..." />
+      <button id="sendButton" onclick="sendMessage()">Enviar</button>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    const socket = io();
+
+    function sendMessage() {
+      const message = $('#input').val();
+      socket.emit('chat message', message);
+      $('#input').val('');
+    }
+
+    socket.on('chat message', (msg) => {
+      $('#messages').append($('<li>').addClass('message').text(msg));
+    });
+  </script>
+</body>
+</html>
